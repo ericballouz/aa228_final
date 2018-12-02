@@ -8,4 +8,10 @@ s = 96x96 pixels
 r = 1000/N*bool(car is on the track) - 0.1
 N is the number of frames explored thus far
 
-call .step(a) to automatically get reward, new state, and whether we are done.
+call env.step(a) to automatically get reward, new state, and whether we are done.
+
+
+To update the max step limit:
+env._max_episode_steps = MAX_STEPS
+or
+env._max_episode_seconds = MAX_SECONDS
