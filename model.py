@@ -6,11 +6,11 @@ import check_if_on_track
 # output: reward of the state and whether the simulation continues
 # the simulation stops when we exit the world
 def R(s, N):
-    if check_if_on_track.check_if_car_in_world(s)
+    if check_if_on_track.check_if_car_in_world(s):
         return -1000000, False
 
     r = -0.1
-    if check_if_on_track.check_if_car_on_track(s)
+    if check_if_on_track.check_if_car_on_track(s):
         r += 1000/N
     return r, True
 
