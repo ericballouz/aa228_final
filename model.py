@@ -1,16 +1,19 @@
 import numpy as np
 import check_if_on_track
-
+import random
 
 # input: state, and number of steps so far
 # output: reward of the state
 def R(s, N):
     if not check_if_on_track.check_if_car_in_world(s):
-        return -1000000
+        return -10000
 
     r = -0.1
     if check_if_on_track.check_if_car_on_track(s):
         r += 1000/N
+
+    #if on finish line and all checkpoints reached
+        #r += 10000
     return r
 
 #def endGame(s, start, checkpoints):
@@ -42,3 +45,43 @@ def action_space():
             possible_actions.append([dV, dtheta])
 
     return possible_actions
+
+# implements Boltzmann exploration
+# s: current state
+# Q_dict: dictionary of Q values involving s
+# N: number of times s was visited
+# returns an action
+def BoltzmannExplore(s, Q_dict, N):
+    # calculate probabilities
+    C = 10000
+    A = action_space()
+    p = {}
+    beta = np.log(N)/C
+    normalize = 0
+    for a in A:
+        p[a] = np.exp(b*Q_dict[(s, a)])
+        normalize += np.exp(p[a])
+
+    # sample according to acceptance-rejection
+    i = random.uniform(0, len(A)-1)
+    Z = A[i]
+    U = random.uniform(0, 1)
+    while p[Z]/normalize < U:
+        i = random.uniform(0, len(A)-1)
+        Z = A[i]
+        U = random.uniform(0, 1)     
+    
+    return Z
+
+
+
+
+
+
+
+
+
+
+
+
+
