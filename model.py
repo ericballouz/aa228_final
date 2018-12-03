@@ -31,8 +31,8 @@ def action_space():
     dtheta_min, dtheta_max, dtheta_step = (-np.pi/8.0, np.pi/8.0, np.pi/8.0)
     
     possible_actions = []
-    for dV in range(dV_min, dV_max, dV_step):
-        for dtheta in range(dtheta_min, dtheta_max, dtheta_step):
+    for dV in np.arange(dV_min, dV_max + dV_step, dV_step):
+        for dtheta in np.arange(dtheta_min, dtheta_max + dtheta_step, dtheta_step):
             possible_actions.append([dV, dtheta])
 
     return possible_actions
