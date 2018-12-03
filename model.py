@@ -73,7 +73,8 @@ def BoltzmannExplore(s, Q_dict, N):
     
     return Z
 
-
+def nextAction(s, Q_dict, N):
+    return BoltzmannExplore(s, Q_dict, N)
 
 
 
