@@ -21,7 +21,7 @@ def nextState(s, a, dt):
     dV, dtheta = (a[0], a[1])
     x = x+V*np.cos(theta)*dt
     y = V*np.sin(theta)*dt
-    theta += dtheta*dt
+    theta += dtheta
     V += dV*dt
     return x, y, V, theta
 
