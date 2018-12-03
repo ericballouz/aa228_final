@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from create_track import World
 import numpy as np
+import start_state
 
 world = World()
 
@@ -71,5 +72,9 @@ vertical_checkpt_x_top = np.zeros(vertical_checkpt_y_top.size)
 plt.plot(vertical_checkpt_x_top,vertical_checkpt_y_top,'r')
 vertical_checkpt_y_bottom = np.linspace(-2.5*world.r_o,-1.5*world.r_o-world.r_i,num=1000)
 plt.plot(vertical_checkpt_x_top,vertical_checkpt_y_bottom,'r')
+
+#plot starting point
+x_start,y_start,V_start,theta_start = start_state.get_start_state()
+plt.scatter(x_start,y_start)
 
 plt.show()
