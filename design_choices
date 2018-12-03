@@ -1,0 +1,9 @@
+Design Choices:
+
+why checkpoints? to make sure we go through all the circuit
+checkpoints: set or array?
+
+exploration strategy: favor forward/no steering
+
+dV_max, dV_min, dtheta_max, dtheta_min: google standard values for race cars
+
