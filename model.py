@@ -2,6 +2,7 @@ import numpy as np
 import check_if_on_track
 import random
 import checkpts
+import finished
 
 # input: state, and number of steps so far
 # output: reward of the state, game done or not
@@ -13,7 +14,7 @@ def R(s, checkpt_list):
     if checkpts.update_checkpts_seen(s,checkpt_list):
         r += 1000/checkpts.num_checkpts
 
-    if checkpts.seen_all_checkpts(checkpt_list): #and reached finish line
+    if finished.is_finished(s,checkpts_list):
         r += 10000
         return r, True
 
