@@ -10,6 +10,9 @@ def R(world,s):
     if not world.check_if_car_in_world(s):
         return -10000, True
 
+    if not world.check_if_car_on_track(s):
+        return -10000, True
+
     r = -0.1
     if world.update_checkpts_seen(s):
         r += 1000/world.num_checkpts

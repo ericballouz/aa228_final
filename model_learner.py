@@ -17,7 +17,7 @@ class Qlearn(object):
         self.gamma = 0.9
         self.dt = 0.1
         self.world = World()
-        self.minimum_Q = 0
+        #self.minimum_Q = 0
 
     def learn(self):
         # Q unlikely to converge so update set number of times
