@@ -4,7 +4,7 @@ import check_if_on_track
 world = World()
 y_checkpts = world.checkpt_y_array
 x_checkpts = world.checkpt_x_array
-
+num_checkpts = y_checkpts * x_checkpts
 
 
 

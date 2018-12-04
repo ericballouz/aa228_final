@@ -7,4 +7,4 @@ def get_start_state():
     y_start = -100
     V_start = 0 #stopped
     theta_start = 0 #facing up
-    return (x_start,y_start,V_start,theta_start)
+    return tuple([x_start, y_start, V_start, theta_start])

@@ -1,20 +1,21 @@
 import numpy as np
 import check_if_on_track
 import random
+from checkpts import num_checkpts
 
 # input: state, and number of steps so far
-# output: reward of the state
-def R(s, N):
+# output: reward of the state, game done or not
+def R(s):
     if not check_if_on_track.check_if_car_in_world(s):
-        return -10000
+        return -10000, True
 
-    r = -0.1
+    r = -1.0
     if check_if_on_track.check_if_car_on_track(s):
-        r += 1000/N
+        r += 1000/num_checkpts
 
     #if on finish line and all checkpoints reached
         #r += 10000
-    return r
+    return r, False
 
 #def endGame(s, start, checkpoints):
 ##    if not check_if_on_track.check_if_car_in_world(s):
@@ -30,7 +31,10 @@ def nextState(s, a, dt):
     y = V*np.sin(theta)*dt
     theta += dtheta
     V += dV*dt
-    return x, y, V, theta
+    # can't go in reverse
+    if V < 0:
+        V = 0
+    return tuple([x, y, V, theta])
 
 # returns action space
 def action_space():
@@ -46,12 +50,15 @@ def action_space():
 
     return possible_actions
 
-# implements Boltzmann exploration
-# s: current state
-# Q_dict: dictionary of Q values involving s
-# N: number of times s was visited
-# returns an action
+
 def BoltzmannExplore(s, Q_dict, N):
+    """
+        implements Boltzmann exploration
+        s: current state
+        Q_dict: dictionary of Q values involving s
+        N: number of times s was visited
+        returns an action
+    """
     # calculate probabilities
     C = 10000
     A = action_space()
