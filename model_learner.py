@@ -73,7 +73,7 @@ class Qlearn(object):
         :return: action tuple (dV, dth)
         """
         action_space = model.action_space()
-        max_idx = np.argmax([self.Q[closestStateAction(state, action)] for action in action_space])
+        max_idx = np.argmax([self.Q[self.closestStateAction(state, action)] for action in action_space])
         return action_space[max_idx]
 
 if __name__ == '__main__':
