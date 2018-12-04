@@ -1,6 +1,6 @@
 import numpy as np
 from collections import defaultdict
-from start_state import get_start_state
+#from start_state import get_start_state
 import model
 from world_master import World
 
@@ -19,7 +19,7 @@ class Qlearn(object):
 
     def learn(self):
         # Q unlikely to converge so update set number of times
-        curr_state = get_start_state()
+        curr_state = self.world.get_start_state()
         episode_count = 0
         action_count = 0
         while episode_count < 100 or action_count < 10000:
@@ -46,7 +46,7 @@ class Qlearn(object):
             if game_finished:
                 episode_count += 1
                 self.N.clear()
-                curr_state = get_start_state()
+                curr_state = self.world.get_start_state()
             else:
                 curr_state = next_state
 
@@ -78,7 +78,7 @@ class Qlearn(object):
         return action_space[max_idx]
 
     def optimalPolicy(self):
-        curr_state = get_start_state()
+        curr_state = self.world.get_start_state()
         policy = [curr_state]
         endGame = False 
         while not endGame:
