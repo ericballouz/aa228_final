@@ -49,6 +49,8 @@ def update_checkpts_seen(state,checkpt_list):
     curr_checkpt = get_curr_checkpt(state)
     if curr_checkpt is not None and curr_checkpt not in checkpt_list:
         checkpt_list.append(curr_checkpt)
+        return True
+    return False
 
 
 def seen_all_checkpts(checkpt_list):
