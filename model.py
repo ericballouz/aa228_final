@@ -1,26 +1,23 @@
 import numpy as np
 import check_if_on_track
 import random
-from checkpts import num_checkpts
+import checkpts
 
 # input: state, and number of steps so far
 # output: reward of the state, game done or not
-def R(s):
+def R(s, checkpt_list):
     if not check_if_on_track.check_if_car_in_world(s):
         return -10000, True
 
-    r = -1.0
-    if check_if_on_track.check_if_car_on_track(s):
-        r += 1000/num_checkpts
+    r = -0.1
+    if checkpts.update_checkpts_seen(s,checkpt_list):
+        r += 1000/checkpts.num_checkpts
 
-    #if on finish line and all checkpoints reached
-        #r += 10000
+    if checkpts.seen_all_checkpts(checkpt_list): #and reached finish line
+        r += 10000
+        return r, True
+
     return r, False
-
-#def endGame(s, start, checkpoints):
-##    if not check_if_on_track.check_if_car_in_world(s):
- #       return True
- #   if
 
 # input: state, action, time step
 # output: next state
