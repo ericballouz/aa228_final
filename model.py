@@ -73,11 +73,11 @@ def BoltzmannExplore(s, Q_dict):
         normalize += p[a]
 
     # sample according to acceptance-rejection
-    i = random.uniform(0, len(A)-1)
+    i = random.randint(0, len(A)-1)
     Z = A[i]
     U = random.uniform(0, 1)
     while p[Z]/normalize < U:
-        i = random.uniform(0, len(A)-1)
+        i = random.randint(0, len(A)-1)
         Z = A[i]
         U = random.uniform(0, 1)     
     
