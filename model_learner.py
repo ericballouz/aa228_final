@@ -23,14 +23,17 @@ class Qlearn(object):
         for _ in range(10000):
             # choose action a
             curr_action = model.nextAction(curr_state, self.Q, self.N)
-            self.N[curr_state + curr_action] += 1
+            reward_t = R(curr_state)
+            self.N[(curr_state, curr_action)] += 1
+            Q_t = self.Q[(curr_state, curr_action)]
 
             # x, y, V, th = nextState(a)
             next_state = model.nextState(curr_state, curr_action, self.dt)
-            reward_t = (), 0
+            delta = reward_t + self.gamma*( max([ self.Q[(next_state, action)] for action in model.action_space()]) - Q_t)
+            
+            #propagate rewards
 
-            max_Q_st1 = 1
-            self.Q[next_state + a] += self.alpha * (reward_t + (self.gamma * max_Q_st1) - self.Q[next_state + a])
+            #reset when simulation ends
 
 
 if __name__ == '__main__':
