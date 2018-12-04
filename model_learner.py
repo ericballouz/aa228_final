@@ -3,6 +3,7 @@ from collections import defaultdict
 #from start_state import get_start_state
 import model
 from world_master import World
+import plot_world_v2
 
 class Qlearn(object):
     def __init__(self):
@@ -21,9 +22,13 @@ class Qlearn(object):
     def learn(self):
         # Q unlikely to converge so update set number of times
         curr_state = self.world.get_start_state()
+        x_list = [curr_state[0]]
+        y_list = [curr_state[1]]
+
         episode_count = 0
         action_count = 0
-        while episode_count < 100 or action_count < 10000:
+        while episode_count < 100:
+
             # choose action a based on exploration strategy
             curr_action = model.nextAction(curr_state, self.Q)
             # observe reward r_t
@@ -31,11 +36,13 @@ class Qlearn(object):
 
             self.N[curr_state + curr_action] += 1
             Q_t = self.Q[curr_state + curr_action]
-            if Q_t <= self.minimum_Q: self.minimum_Q = Q_t
+            #if Q_t <= self.minimum_Q: self.minimum_Q = Q_t
 
             # tuple([x, y, V, th]) = nextState(a)
             # observe new state s_t+1
             next_state = model.nextState(curr_state, curr_action, self.dt)
+            x_list.append(next_state[0])
+            y_list.append(next_state[1])
             delta = reward_t + (self.gamma*max([self.Q[next_state + action] for action in model.action_space()])) - Q_t
 
             # propagate rewards
@@ -45,15 +52,22 @@ class Qlearn(object):
 
             action_count += 1
             # reset when simulation ends
-            if game_finished or self.minimum_Q < -10.0:
+            if game_finished or action_count> 3000:
                 episode_count += 1
-                action_count = 0
                 self.N.clear()
                 curr_state = self.world.get_start_state()
+                print("Done learning with episode count:{}  and action count: {}".format(episode_count, action_count))
+                plot_world_v2.plot_startup(self.world)
+                plot_world_v2.plot_trajectory(np.asarray(x_list),np.asarray(y_list))
+                plot_world_v2.show_plot()
+                action_count = 0
+                x_list = [self.world.start_state[0]]
+                y_list = [self.world.start_state[1]]
+                self.world.checkpts_hit = []
             else:
                 curr_state = next_state
 
-        print("Done learning with episode count:{}  and action count: {}".format(episode_count, action_count))
+
 
     # input: state and action
     # output: closest match within self.Q
