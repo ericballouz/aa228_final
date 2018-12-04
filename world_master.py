@@ -16,7 +16,8 @@ class World:
         checkpt_y_list.append(1.5*self.r_o)
         self.checkpt_y_array = np.asarray(checkpt_y_list)
         self.checkpt_x_array = np.asarray([0])
-        self.x,self.y,self.V,self.theta = self.get_start_state()
+        self.start_x,self.start_y,self.start_V,self.start_theta = self.get_start_state()
+        self.start_state = tuple([self.start_x,self.start_y,self.start_V,self.start_theta])
         self.checkpts_hit = list()
         #self.state = (self.x,self.y,self.V,self.theta)
 
@@ -25,7 +26,7 @@ class World:
         y_start = -100
         V_start = 0  # stopped
         theta_start = 0  # facing up
-        return (x_start, y_start, V_start, theta_start)
+        return tuple([x_start, y_start, V_start, theta_start])
 
     def check_if_car_in_world(self, state):
         (x,y,V,theta) = state

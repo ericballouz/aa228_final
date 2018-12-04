@@ -1,20 +1,20 @@
 import numpy as np
-import check_if_on_track
+#import check_if_on_track
 import random
-import checkpts
-import finished
+#import checkpts
+#import finished
 
 # input: state, and number of steps so far
 # output: reward of the state, game done or not
-def R(s, checkpt_list):
-    if not check_if_on_track.check_if_car_in_world(s):
+def R(world,s):
+    if not world.check_if_car_in_world(s):
         return -10000, True
 
     r = -0.1
-    if checkpts.update_checkpts_seen(s,checkpt_list):
-        r += 1000/checkpts.num_checkpts
+    if world.update_checkpts_seen(s):
+        r += 1000/world.num_checkpts
 
-    if finished.is_finished(s,checkpts_list):
+    if world.successfully_finished(s):
         r += 10000
         return r, True
 
@@ -26,7 +26,7 @@ def nextState(s, a, dt):
     x, y, V, theta = (s[0], s[1], s[2], s[3])
     dV, dtheta = (a[0], a[1])
     x = x+V*np.cos(theta)*dt
-    y = V*np.sin(theta)*dt
+    y = y+V*np.sin(theta)*dt
     theta += dtheta
     V += dV*dt
     # can't go in reverse
@@ -64,7 +64,7 @@ def BoltzmannExplore(s, Q_dict, N):
     beta = np.log(N)/C
     normalize = 0
     for a in A:
-        p[a] = np.exp(b*Q_dict[(s, a)])
+        p[a] = np.exp(beta*Q_dict[(s, a)])
         normalize += np.exp(p[a])
 
     # sample according to acceptance-rejection
