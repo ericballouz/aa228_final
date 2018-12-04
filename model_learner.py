@@ -2,7 +2,7 @@ import numpy as np
 from collections import defaultdict
 from start_state import get_start_state
 import model
-from world_master import World()
+from world_master import World
 
 class Qlearn(object):
     def __init__(self):
