@@ -11,10 +11,10 @@ def R(s, checkpt_list):
         return -10000, True
 
     r = -0.1
-    if checkpts.update_checkpts_seen(s,checkpt_list):
+    if checkpts.update_checkpts_seen(s, checkpt_list):
         r += 1000/checkpts.num_checkpts
 
-    if finished.is_finished(s,checkpts_list):
+    if finished.is_finished(s, checkpt_list):
         r += 10000
         return r, True
 
@@ -36,15 +36,19 @@ def nextState(s, a, dt):
 
 # returns action space
 def action_space():
+    """
+    Returns all possible actions that can be taken
+    :return: list of action tuples - [(dV_1, dth_1), (dV_2, dth_2), (dV_3, dth_3), ...]
+    """
     dV_min, dV_max, dV_step = (-10, 10, 1.0)
     dtheta_min, dtheta_max, dtheta_step = (-np.pi/8.0, np.pi/8.0, np.pi/8.0)
     
     possible_actions = []
     for dV in np.arange(dV_min, dV_max + dV_step, dV_step):
-        possible_actions.append([dV, 0])
+        possible_actions.append(tuple([dV, 0]))
     for dtheta in [dtheta_min, dtheta_max]:
         for dV in np.arange(dV_min, dV_max + dV_step, dV_step):
-            possible_actions.append([dV, dtheta])
+            possible_actions.append(tuple([dV, dtheta]))
 
     return possible_actions
 
@@ -80,14 +84,4 @@ def BoltzmannExplore(s, Q_dict, N):
 
 def nextAction(s, Q_dict, N):
     return BoltzmannExplore(s, Q_dict, N)
-
-
-
-
-
-
-
-
-
-
 
