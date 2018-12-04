@@ -8,17 +8,17 @@ import random
 # output: reward of the state, game done or not
 def R(world,s):
     if not world.check_if_car_in_world(s):
-        return -10000, True
+        return -10, True
 
     if not world.check_if_car_on_track(s):
-        return -10000, True
+        return -10, True
 
-    r = -0.1
+    r = -0.0001
     if world.update_checkpts_seen(s):
-        r += 1000/world.num_checkpts
+        r += 10/world.num_checkpts
 
     if world.successfully_finished(s):
-        r += 10000
+        r += 10
         return r, True
 
     return r, False

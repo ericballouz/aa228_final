@@ -12,9 +12,9 @@ class Qlearn(object):
         # action_size = len(model.action_space())
         self.Q = defaultdict(int)  # key: state,action(x, y, th, dv, dth) => value: Q
         self.N = defaultdict(int)  # key: (state, action) => value: N, num of visit to (state, action) for curr episode
-        self.lam = 0.9
-        self.alpha = 0.9
-        self.gamma = 0.9
+        self.lam = 0.8
+        self.alpha = 0.85
+        self.gamma = 0.85
         self.dt = 0.1
         self.world = World()
         #self.minimum_Q = 0

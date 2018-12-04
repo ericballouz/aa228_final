@@ -94,7 +94,7 @@ class World:
 
     def update_checkpts_seen(self,state):
         curr_checkpt = self.get_curr_checkpt(state)
-        if curr_checkpt is not None and curr_checkpt not in self.checkpts_hit:
+        if curr_checkpt is not None and curr_checkpt not in self.checkpts_hit: #UPDATE THIS SO THAT IT GOES IN ORDER (1 more than prev)
             self.checkpts_hit.append(curr_checkpt)
             return True
         return False
