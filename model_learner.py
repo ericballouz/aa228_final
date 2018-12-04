@@ -2,7 +2,7 @@ import numpy as np
 from collections import defaultdict
 from start_state import get_start_state
 import model
-
+from world_master import World()
 
 class Qlearn(object):
     def __init__(self):
@@ -15,6 +15,7 @@ class Qlearn(object):
         self.alpha = 0.9
         self.gamma = 0.9
         self.dt = 0.1
+        self.world = World()
 
     def learn(self):
         # Q unlikely to converge so update set number of times
@@ -25,7 +26,7 @@ class Qlearn(object):
             # choose action a based on exploration strategy
             curr_action = model.nextAction(curr_state, self.Q, self.N)
             # observe reward r_t
-            reward_t, game_finished = model.R(curr_state)
+            reward_t, game_finished = model.R(self.world, curr_state)
 
             self.N[curr_state + curr_action] += 1
             Q_t = self.Q[curr_state + curr_action]
@@ -76,6 +77,23 @@ class Qlearn(object):
         max_idx = np.argmax([self.Q[self.closestStateAction(state, action)] for action in action_space])
         return action_space[max_idx]
 
+    def optimalPolicy(self):
+        curr_state = get_start_state()
+        policy = [curr_state]
+        endGame = False 
+        while not endGame:
+            optimal_action = self.best_action(curr_state)
+            curr_state = model.nextState(curr_state, optimal_action, self.dt)
+            policy.append(curr_state)
+            _, endGame = model.R(self.world, curr_state)
+        return policy
+
+
 if __name__ == '__main__':
     print("Running model_learner.py main")
     my_model = Qlearn()
+    print("begin learning")
+    my_model.learn()
+    print("done! calculate optimal policy")
+    policy = my_model.optimalPolicy()
+    print(policy)
