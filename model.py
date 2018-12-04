@@ -35,6 +35,8 @@ def nextState(s, a, dt):
     # can't go in reverse
     if V < 0:
         V = 0
+    return_val = tuple([x, y, V, theta])
+    assert len(return_val) == 4
     return tuple([x, y, V, theta])
 
 # returns action space
@@ -69,7 +71,7 @@ def BoltzmannExplore(s, Q_dict):
     p = {}
     normalize = 0
     for a in A:
-        p[a] = np.exp(Q_dict[(s, a)]/tau)
+        p[a] = np.exp(Q_dict[s + a]/tau)
         normalize += p[a]
 
     # sample according to acceptance-rejection
@@ -80,7 +82,8 @@ def BoltzmannExplore(s, Q_dict):
         i = random.randint(0, len(A)-1)
         Z = A[i]
         U = random.uniform(0, 1)     
-    
+
+    assert len(Z) == 2
     return Z
 
 def nextAction(s, Q_dict):

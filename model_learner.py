@@ -52,14 +52,15 @@ class Qlearn(object):
 
             action_count += 1
             # reset when simulation ends
-            if game_finished or action_count> 3000:
+            if game_finished or action_count > 3000:
                 episode_count += 1
                 self.N.clear()
                 curr_state = self.world.get_start_state()
                 print("Done learning with episode count:{}  and action count: {}".format(episode_count, action_count))
-                plot_world_v2.plot_startup(self.world)
-                plot_world_v2.plot_trajectory(np.asarray(x_list),np.asarray(y_list))
-                plot_world_v2.show_plot()
+                if episode_count % 50 == 0:
+                    plot_world_v2.plot_startup(self.world)
+                    plot_world_v2.plot_trajectory(np.asarray(x_list), np.asarray(y_list))
+                    plot_world_v2.show_plot()
                 action_count = 0
                 x_list = [self.world.start_state[0]]
                 y_list = [self.world.start_state[1]]
@@ -76,7 +77,7 @@ class Qlearn(object):
         min_distance = 10000
         closest = 0
         for learned_state in self.Q.keys():
-            distance = sum([(state_action[i] - learned_state[i])**2] for i in range(len(state_action)))
+            distance = sum([(state_action[i] - learned_state[i])**2 for i in range(len(state_action))])
             if distance <= min_distance:
                 min_distance = distance
                 closest = learned_state
