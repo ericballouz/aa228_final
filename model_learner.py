@@ -51,6 +51,21 @@ class Qlearn(object):
 
         print("Done learning with episode count:{}  and action count: {}".format(episode_count, action_count))
 
+    # input: state and action
+    # output: closest match within self.Q
+    def closestStateAction(self, state, action):
+        state_action = state + action
+        min_distance = 10000
+        closest = 0
+        for learned_state in self.Q.keys():
+            distance = sum([(state_action[i] - learned_state[i])**2] for i in range(len(state_action)))
+            if distance <= min_distance:
+                min_distance = distance
+                closest = learned_state
+            # if learned_state close enough, return
+            if distance <= 3.02: return learned_state
+        return closest
+
     def best_action(self, state):
         """
         Return the best action from a trained Q model for a given state
@@ -58,7 +73,7 @@ class Qlearn(object):
         :return: action tuple (dV, dth)
         """
         action_space = model.action_space()
-        max_idx = np.argmax([self.Q[state + action] for action in action_space])
+        max_idx = np.argmax([self.Q[closestStateAction(state, action)] for action in action_space])
         return action_space[max_idx]
 
 if __name__ == '__main__':
