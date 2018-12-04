@@ -16,6 +16,7 @@ class Qlearn(object):
         self.gamma = 0.9
         self.dt = 0.1
         self.world = World()
+        self.minimum_Q = 0
 
     def learn(self):
         # Q unlikely to converge so update set number of times
@@ -30,6 +31,7 @@ class Qlearn(object):
 
             self.N[curr_state + curr_action] += 1
             Q_t = self.Q[curr_state + curr_action]
+            if Q_t <= self.minimum_Q: self.minimum_Q = Q_t
 
             # tuple([x, y, V, th]) = nextState(a)
             # observe new state s_t+1
@@ -43,8 +45,9 @@ class Qlearn(object):
 
             action_count += 1
             # reset when simulation ends
-            if game_finished:
+            if game_finished or self.minimum_Q < -10.0:
                 episode_count += 1
+                action_count = 0
                 self.N.clear()
                 curr_state = self.world.get_start_state()
             else:
