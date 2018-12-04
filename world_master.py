@@ -7,13 +7,15 @@ class World:
         self.window_w = 4*self.r_o
         self.window_l = 8*self.r_o
         self.track_len = 3*self.r_o
-        self.num_checkpts = 12
-        checkpt_y_size = (3*self.r_o)/((self.num_checkpts/2)-2)
+        self.num_checkpts = 24
+        checkpt_y_size = (3*self.r_o)/((self.num_checkpts/2)-4)
         checkpt_y_list = list()
-        for i in range(0,int(self.num_checkpts/2)-2):
+        checkpt_y_list.append(-1.5*self.r_o-self.r_i)
+        for i in range(0,int(self.num_checkpts/2)-4):
             y_bottom_of_straight = -1.5*self.r_o
             checkpt_y_list.append(y_bottom_of_straight + i*checkpt_y_size)
         checkpt_y_list.append(1.5*self.r_o)
+        checkpt_y_list.append(1.5 * self.r_o + self.r_i)
         self.checkpt_y_array = np.asarray(checkpt_y_list)
         self.checkpt_x_array = np.asarray([0])
         self.start_x,self.start_y,self.start_V,self.start_theta = self.get_start_state()
@@ -23,7 +25,7 @@ class World:
 
     def get_start_state(self):
         x_start = self.r_i + ((self.r_o - self.r_i) / 2)
-        y_start = -100
+        y_start = -1
         V_start = 0  # stopped
         theta_start = 0  # facing up
         return tuple([x_start, y_start, V_start, theta_start])
@@ -69,34 +71,60 @@ class World:
             right = False
         if y < y_checkpts[0]:
             if right:
-                return 10
-            return 9
-        if y > y_checkpts[y_checkpts.size - 1]:
-            if right:
-                return 3
-            return 4
+                return 19
+            return 18
         if y < y_checkpts[1]:
             if right:
-                return 11
-            return 8
+                return 20
+            return 17
         if y < y_checkpts[2]:
             if right:
-                return 0
-            return 7
+                return 21
+            return 16
         if y < y_checkpts[3]:
             if right:
-                return 1
-            return 6
+                return 22
+            return 15
         if y < y_checkpts[4]:
             if right:
+                return 23
+            return 14
+        if y < y_checkpts[5]:
+            if right:
+                return 0
+            return 13
+        if y < y_checkpts[6]:
+            if right:
+                return 1
+            return 12
+        if y < y_checkpts[7]:
+            if right:
                 return 2
-            return 5
+            return 11
+        if y < y_checkpts[8]:
+            if right:
+                return 3
+            return 10
+        if y < y_checkpts[9]:
+            if right:
+                return 4
+            return 9
+        if y < y_checkpts[10]:
+            if right:
+                return 5
+            return 8
+        if y>y_checkpts[y_checkpts.size-1]:
+            if right:
+                return 6
+            return 7
 
     def update_checkpts_seen(self,state):
         curr_checkpt = self.get_curr_checkpt(state)
-        if curr_checkpt is not None and curr_checkpt not in self.checkpts_hit: #UPDATE THIS SO THAT IT GOES IN ORDER (1 more than prev)
-            self.checkpts_hit.append(curr_checkpt)
-            return True
+
+        if curr_checkpt is not None and curr_checkpt not in self.checkpts_hit: #UPDATEd THIS SO THAT IT GOES IN ORDER (1 more than prev)
+            if not(self.checkpts_hit) or curr_checkpt==1+self.checkpts_hit[len(self.checkpts_hit)-1]: #if empty or if next one is 1 more than current max
+                self.checkpts_hit.append(curr_checkpt)
+                return True
         return False
 
     def seen_all_checkpts(self):

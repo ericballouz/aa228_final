@@ -68,18 +68,26 @@ def plot_checkpts(world):
     checkpt_y_array = world.checkpt_y_array
     for i in range(checkpt_y_array.size):
         y_val = checkpt_y_array[i]
-        x_checkpt_left = np.linspace(-world.r_o, -world.r_i, num=1000)
-        y_checkpt_left = y_val * np.ones(x_checkpt_left.size)
-        plt.plot(x_checkpt_left, y_checkpt_left, 'r')
-        x_checkpt_right = np.linspace(world.r_i, world.r_o, num=1000)
-        y_checkpt_right = y_val * np.ones(x_checkpt_right.size)
-        plt.plot(x_checkpt_right, y_checkpt_right, 'r')
+        if i!=0 and i!=checkpt_y_array.size-1:
+            x_checkpt_left = np.linspace(-world.r_o, -world.r_i, num=1000)
+            y_checkpt_left = y_val * np.ones(x_checkpt_left.size)
+            plt.plot(x_checkpt_left, y_checkpt_left, 'r')
+            x_checkpt_right = np.linspace(world.r_i, world.r_o, num=1000)
+            y_checkpt_right = y_val * np.ones(x_checkpt_right.size)
+            plt.plot(x_checkpt_right, y_checkpt_right, 'r')
+        else:
+            x_checkpt = np.linspace(-np.sqrt((world.r_o*world.r_o)-(world.r_i*world.r_i)), np.sqrt((world.r_o*world.r_o)-(world.r_i*world.r_i)), num=1000)
+            y_checkpt = y_val * np.ones(x_checkpt.size)
+            plt.plot(x_checkpt, y_checkpt, 'r')
+
+
     # plot vertical checkpts
     vertical_checkpt_y_top = np.linspace(1.5 * world.r_o + world.r_i, 2.5 * world.r_o, num=1000)
     vertical_checkpt_x_top = np.zeros(vertical_checkpt_y_top.size)
     plt.plot(vertical_checkpt_x_top, vertical_checkpt_y_top, 'r')
     vertical_checkpt_y_bottom = np.linspace(-2.5 * world.r_o, -1.5 * world.r_o - world.r_i, num=1000)
     plt.plot(vertical_checkpt_x_top, vertical_checkpt_y_bottom, 'r')
+
 
 
 def plot_starting_pt(world):
