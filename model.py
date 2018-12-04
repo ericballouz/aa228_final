@@ -53,23 +53,21 @@ def action_space():
     return possible_actions
 
 
-def BoltzmannExplore(s, Q_dict, N):
+def BoltzmannExplore(s, Q_dict):
     """
         implements Boltzmann exploration
         s: current state
         Q_dict: dictionary of Q values involving s
-        N: number of times s was visited
         returns an action
     """
     # calculate probabilities
-    C = 10000
+    tau = 0.5
     A = action_space()
     p = {}
-    beta = np.log(N)/C
     normalize = 0
     for a in A:
-        p[a] = np.exp(beta*Q_dict[(s, a)])
-        normalize += np.exp(p[a])
+        p[a] = np.exp(Q_dict[(s, a)]/tau)
+        normalize += p[a]
 
     # sample according to acceptance-rejection
     i = random.uniform(0, len(A)-1)
@@ -82,6 +80,6 @@ def BoltzmannExplore(s, Q_dict, N):
     
     return Z
 
-def nextAction(s, Q_dict, N):
-    return BoltzmannExplore(s, Q_dict, N)
+def nextAction(s, Q_dict):
+    return BoltzmannExplore(s, Q_dict)
 

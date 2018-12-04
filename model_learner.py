@@ -24,7 +24,7 @@ class Qlearn(object):
         action_count = 0
         while episode_count < 100 or action_count < 10000:
             # choose action a based on exploration strategy
-            curr_action = model.nextAction(curr_state, self.Q, self.N)
+            curr_action = model.nextAction(curr_state, self.Q)
             # observe reward r_t
             reward_t, game_finished = model.R(self.world, curr_state)
 
