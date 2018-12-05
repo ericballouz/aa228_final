@@ -11,7 +11,7 @@ def R(world,s):
         return -10, True
 
     if not world.check_if_car_on_track(s):
-        return -10, True
+        return -1, True
 
     r = -0.0001
     if world.update_checkpts_seen(s):
