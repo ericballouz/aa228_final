@@ -104,6 +104,8 @@ def plot_startup(world):
 def plot_trajectory(x_array,y_array):
     plt.scatter(x_array,y_array)
 
+def plot_world_v2.savefig(filename):
+    plt.savefig(filename)
 
 def show_plot():
     plt.show()

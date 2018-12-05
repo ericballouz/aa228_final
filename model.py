@@ -11,11 +11,11 @@ def R(world,s):
         return -10, True
 
     if not world.check_if_car_on_track(s):
-        return -1, True
+        return 0, True #-10, True
 
     r = -0.0001
     if world.update_checkpts_seen(s):
-        r += 10/world.num_checkpts
+        r += 100/world.num_checkpts
 
     if world.successfully_finished(s):
         r += 10
@@ -78,7 +78,7 @@ def BoltzmannExplore(s, Q_dict):
     i = random.randint(0, len(A)-1)
     Z = A[i]
     U = random.uniform(0, 1)
-    while p[Z]/normalize < U:
+    while p[Z]/normalize <= U:
         i = random.randint(0, len(A)-1)
         Z = A[i]
         U = random.uniform(0, 1)     

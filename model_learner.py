@@ -12,10 +12,10 @@ class Qlearn(object):
         # action_size = len(model.action_space())
         self.Q = defaultdict(int)  # key: state,action(x, y, th, dv, dth) => value: Q
         self.N = defaultdict(int)  # key: (state, action) => value: N, num of visit to (state, action) for curr episode
-        self.lam = 0.8
+        self.lam = 0.5
         self.alpha = 0.9
         self.gamma = 0.9
-        self.dt = 0.1
+        self.dt = 1.0
         self.world = World()
         self.seen_s_to_a = {}
         self.x_list = []
@@ -29,7 +29,7 @@ class Qlearn(object):
 
         episode_count = 0
         action_count = 0
-        while episode_count < 300:
+        while episode_count < 15000:
 
             # choose action a based on exploration strategy
             curr_action = model.nextAction(curr_state, self.Q)
@@ -56,15 +56,16 @@ class Qlearn(object):
 
             action_count += 1
             # reset when simulation ends
-            if game_finished or action_count > 3000:
+            if game_finished or action_count > 6000:
                 episode_count += 1
                 self.N.clear()
                 curr_state = self.world.get_start_state()
                 print("Done learning with episode count:{}  and action count: {}".format(episode_count, action_count))
-                #if episode_count % 50 == 0:
-                #    plot_world_v2.plot_startup(self.world)
-                #    plot_world_v2.plot_trajectory(np.asarray(x_list), np.asarray(y_list))
+                if episode_count % 500 == 0:
+                    plot_world_v2.plot_startup(self.world)
+                    plot_world_v2.plot_trajectory(np.asarray(x_list), np.asarray(y_list))
                 #    plot_world_v2.show_plot()
+                    plot_world_v2.savefig('fig(%d).png' % episode_count) 
                 action_count = 0
                 x_list = [self.world.start_state[0]]
                 y_list = [self.world.start_state[1]]
