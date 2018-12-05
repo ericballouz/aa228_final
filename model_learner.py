@@ -126,7 +126,7 @@ class Qlearn(object):
 
         plot_world_v2.plot_startup(self.world)
         plot_world_v2.plot_trajectory(np.asarray(self.x_list), np.asarray(self.y_list))
-        plot_world_v2.show_plot()
+        plot_world_v2.savefig('final_traj.png')
         return policy
 
 
