@@ -109,7 +109,9 @@ class Qlearn(object):
         curr_state = self.world.get_start_state()
         policy = [curr_state]
         endGame = False 
-        while not endGame:
+        i = 0
+        while not endGame and i < 3000:
+            i += 1
             optimal_action = self.best_action(curr_state)
             curr_state = model.nextState(curr_state, optimal_action, self.dt)
             policy.append(curr_state)
