@@ -20,7 +20,7 @@ class World:
         self.checkpt_x_array = np.asarray([0])
         self.start_x,self.start_y,self.start_V,self.start_theta = self.get_start_state()
         self.start_state = tuple([self.start_x,self.start_y,self.start_V,self.start_theta])
-        self.checkpts_hit = list()
+        self.checkpts_hit = [0]
         #self.state = (self.x,self.y,self.V,self.theta)
 
     def get_start_state(self):
@@ -120,9 +120,11 @@ class World:
 
     def update_checkpts_seen(self,state):
         curr_checkpt = self.get_curr_checkpt(state)
+        #print(self.checkpts_hit)
+        if (curr_checkpt is not None) and curr_checkpt not in self.checkpts_hit: #UPDATEd THIS SO THAT IT GOES IN ORDER (1 more than prev)
 
-        if curr_checkpt is not None and curr_checkpt not in self.checkpts_hit: #UPDATEd THIS SO THAT IT GOES IN ORDER (1 more than prev)
-            if not(self.checkpts_hit) or curr_checkpt==1+self.checkpts_hit[len(self.checkpts_hit)-1]: #if empty or if next one is 1 more than current max
+            if curr_checkpt==1+self.checkpts_hit[len(self.checkpts_hit)-1]: #if empty or if next one is 1 more than current max
+                print("Just saw checkpt {}".format(curr_checkpt))
                 self.checkpts_hit.append(curr_checkpt)
                 return True
         return False

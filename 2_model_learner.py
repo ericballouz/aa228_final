@@ -69,7 +69,7 @@ class Qlearn(object):
                 action_count = 0
                 x_list = [self.world.start_state[0]]
                 y_list = [self.world.start_state[1]]
-                self.world.checkpts_hit = []
+                self.world.checkpts_hit = [0]
             else:
                 curr_state = next_state
 

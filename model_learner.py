@@ -65,11 +65,11 @@ class Qlearn(object):
                     plot_world_v2.plot_startup(self.world)
                     plot_world_v2.plot_trajectory(np.asarray(x_list), np.asarray(y_list))
                 #    plot_world_v2.show_plot()
-                    plot_world_v2.savefig('fig(%d).png' % episode_count) 
+                    plot_world_v2.savefig('fig(%d)_test2.png' % episode_count)
                 action_count = 0
                 x_list = [self.world.start_state[0]]
                 y_list = [self.world.start_state[1]]
-                self.world.checkpts_hit = []
+                self.world.checkpts_hit = [0]
             else:
                 curr_state = next_state
 
