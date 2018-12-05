@@ -18,6 +18,8 @@ class Qlearn(object):
         self.dt = 0.1
         self.world = World()
         self.seen_s_to_a = {}
+        self.x_list = []
+        self.y_list = []
 
     def learn(self):
         # Q unlikely to converge so update set number of times
@@ -27,7 +29,7 @@ class Qlearn(object):
 
         episode_count = 0
         action_count = 0
-        while episode_count < 100:
+        while episode_count < 300:
 
             # choose action a based on exploration strategy
             curr_action = model.nextAction(curr_state, self.Q)
@@ -103,19 +105,27 @@ class Qlearn(object):
             if self.Q[state+action] >= Qmax:
                 Qmax = self.Q[state+action]
                 amax = action
-        return action
+        return amax
 
     def optimalPolicy(self):
         curr_state = self.world.get_start_state()
-        policy = [curr_state]
+        self.x_list.append(curr_state[0])
+        self.y_list.append(curr_state[1])
+        policy = []
         endGame = False 
         i = 0
         while not endGame and i < 3000:
             i += 1
             optimal_action = self.best_action(curr_state)
             curr_state = model.nextState(curr_state, optimal_action, self.dt)
-            policy.append(curr_state)
+            policy.append(optimal_action)
+            self.x_list.append(curr_state[0])
+            self.y_list.append(curr_state[1])
             _, endGame = model.R(self.world, curr_state)
+
+        plot_world_v2.plot_startup(self.world)
+        plot_world_v2.plot_trajectory(np.asarray(self.x_list), np.asarray(self.y_list))
+        plot_world_v2.show_plot()
         return policy
 
 
