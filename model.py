@@ -1,8 +1,5 @@
 import numpy as np
-#import check_if_on_track
 import random
-#import checkpts
-#import finished
 
 # input: state, and number of steps so far
 # output: reward of the state, game done or not
@@ -11,14 +8,14 @@ def R(world,s):
         return -10, True
 
     if not world.check_if_car_on_track(s):
-        return 0, True #-10, True
+        return -0.01, True #-10, True
 
     r = -0.0001
     if world.update_checkpts_seen(s):
         r += 100/world.num_checkpts
 
     if world.successfully_finished(s):
-        r += 10
+        r += 50
         return r, True
 
     return r, False
@@ -66,7 +63,7 @@ def BoltzmannExplore(s, Q_dict):
         returns an action
     """
     # calculate probabilities
-    tau = 0.5
+    tau = 0.505
     A = action_space()
     p = {}
     normalize = 0

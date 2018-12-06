@@ -124,7 +124,7 @@ class World:
         if (curr_checkpt is not None) and curr_checkpt not in self.checkpts_hit: #UPDATEd THIS SO THAT IT GOES IN ORDER (1 more than prev)
 
             if curr_checkpt==1+self.checkpts_hit[len(self.checkpts_hit)-1]: #if empty or if next one is 1 more than current max
-                print("Just saw checkpt {}".format(curr_checkpt))
+                #print("Just saw checkpt {}".format(curr_checkpt))
                 self.checkpts_hit.append(curr_checkpt)
                 return True
         return False
@@ -140,4 +140,6 @@ class World:
             return True
         return False
 
-
+    def printFarthestCheckpt(self):
+        print("Farthest checkpoint: %d" % max(self.checkpts_hit))
+        return

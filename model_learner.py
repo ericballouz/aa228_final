@@ -12,10 +12,10 @@ class Qlearn(object):
         # action_size = len(model.action_space())
         self.Q = defaultdict(int)  # key: state,action(x, y, th, dv, dth) => value: Q
         self.N = defaultdict(int)  # key: (state, action) => value: N, num of visit to (state, action) for curr episode
-        self.lam = 0.5
+        self.lam = 0.8
         self.alpha = 0.9
         self.gamma = 0.9
-        self.dt = 1.0
+        self.dt = 0.9
         self.world = World()
         self.seen_s_to_a = {}
         self.x_list = []
@@ -29,7 +29,7 @@ class Qlearn(object):
 
         episode_count = 0
         action_count = 0
-        while episode_count < 15000:
+        while episode_count < 8000:
 
             # choose action a based on exploration strategy
             curr_action = model.nextAction(curr_state, self.Q)
@@ -61,6 +61,7 @@ class Qlearn(object):
                 self.N.clear()
                 curr_state = self.world.get_start_state()
                 print("Done learning with episode count:{}  and action count: {}".format(episode_count, action_count))
+                self.world.printFarthestCheckpt()
                 if episode_count % 500 == 0:
                     plot_world_v2.plot_startup(self.world)
                     plot_world_v2.plot_trajectory(np.asarray(x_list), np.asarray(y_list))
