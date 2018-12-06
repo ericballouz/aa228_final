@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+#import matplotlib.axes as ax
 #from create_track import World
 import numpy as np
 #import start_state
@@ -12,7 +13,9 @@ def plot_boundary(world):
     right_side = world.window_w / 2 * np.ones(y_space.size)
     bottom_side = -world.window_l / 2 * np.ones(x_space.size)
     top_side = world.window_l / 2 * np.ones(x_space.size)
-    plt.figure()
+    plt.figure(figsize=(6,10))
+    plt.tick_params(labelsize=8)
+    #ax.Axes.tick_params(self = plt,labelsize='small')
     plt.plot(left_side, y_space, 'k')
     plt.plot(right_side, y_space, 'k')
     plt.plot(x_space, bottom_side, 'k')
