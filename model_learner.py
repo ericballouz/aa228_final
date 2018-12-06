@@ -15,7 +15,7 @@ class Qlearn(object):
         self.lam = 0.8
         self.alpha = 0.9
         self.gamma = 0.9
-        self.dt = 0.9
+        self.dt = 1.0
         self.world = World()
         self.seen_s_to_a = {}
         self.x_list = []

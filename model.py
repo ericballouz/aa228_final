@@ -29,12 +29,17 @@ def nextState(s, a, dt):
     y = y+V*np.sin(theta)*dt
     theta += dtheta
     V += dV*dt
-    # can't go in reverse
-    if V < 0:
-        V = 0
-    return_val = tuple([x, y, V, theta])
+    return_val = adjustValues(x, y, V, theta)
     assert len(return_val) == 4
-    return tuple([x, y, V, theta])
+    return return_val
+
+def adjustValues(x, y, V, theta):
+    #x = np.round(x/5)*5
+    #y = np.round(y/5)*5
+    V = max(0, V)
+    V = np.round(V)
+    theta = np.mod(theta, 2*np.pi)
+    return (x, y, V, theta)
 
 # returns action space
 def action_space():
@@ -63,7 +68,7 @@ def BoltzmannExplore(s, Q_dict):
         returns an action
     """
     # calculate probabilities
-    tau = 0.505
+    tau = 0.5
     A = action_space()
     p = {}
     normalize = 0
