@@ -91,9 +91,9 @@ def BoltzmannExplore(s, Q_dict):
 def epsGreedy(s, Q_dict):
     epsilon = 0.5
     A = action_space()
-    Zmax = max(Q_dict[s+a] for a in A)
+    imax = np.argmax([Q_dict[(s+a) for a in A])
     U = random.uniform(0, 1)
-    if U < (1-epsilon): return Zmax
+    if U < (1-epsilon): return A[imax]
     else:
         i = random.randint(0, len(A)-1)
         return A[i]
