@@ -134,7 +134,12 @@ class Qlearn(object):
         return policy
 
     def valueIterate(self):
-        return
+        #initialize dictionary
+        theta_space, state_space_dict = model.get_state_space_dict(self.world)
+
+
+
+        return theta_space, state_space_dict
 
 if __name__ == '__main__':
     print("Running model_learner.py main")

@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import itertools as it
 
 # input: state, and number of steps so far
 # output: reward of the state, game done or not
@@ -38,7 +39,7 @@ def adjustValues(x, y, V, theta):
     y = np.round(y/5)*5
     V = max(0, V)
     V = np.round(V)
-    theta = np.mod(theta, 2*np.pi)
+    theta = np.mod(theta, np.pi)
     return (x, y, V, theta)
 
 # returns action space
@@ -101,4 +102,51 @@ def epsGreedy(s, Q_dict):
 
 def nextAction(s, Q_dict, trackCompleted):
     return BoltzmannExplore(s, Q_dict, trackCompleted)#epsGreedy(s, Q_dict)
+
+def get_state_space(world):
+    x_space = np.zeros(int(world.window_w/5)+1)
+    counter = 0
+    for i in range(int(-world.window_w/2),int(world.window_w/2),5):
+        x_space[counter]=i
+        counter+=1
+    x_space[x_space.size-1] = int(world.window_w/2)
+
+    y_space = np.zeros(int(world.window_l/5)+1)
+    counter = 0
+    for i in range(int(-world.window_l/2),int(world.window_l/2),5):
+        y_space[counter] = i
+        counter+=1
+    y_space[y_space.size-1] = int(world.window_l/2)
+
+    V_space = np.zeros(101)
+    for i in range(101):
+        V_space[i] = i
+
+    theta_space = (-np.pi)*np.ones(17)
+    for i in range(theta_space.size):
+        theta_space[i]+=(np.pi/8)*i
+    #theta_space = np.around(theta_space,1)
+    print(theta_space)
+
+    return x_space,y_space,V_space,theta_space
+
+def get_state_space_dict(world):
+    x_space, y_space, V_space, theta_space = get_state_space(world)
+    state_space_dict = dict()
+    space_list = [list(x_space),list(y_space), list(V_space),list(theta_space)]
+    for element in it.product(*space_list):
+        state_space_dict[element] = 0
+        #for xi in range(x_space.size):
+            #for yi in range(y_space.size):
+                #for Vi in range(V_space.size):
+                    #for thetai in range(theta_space.size):
+                        #state_space_dict[(xi,yi,Vi,thetai)] = 0
+    return theta_space,state_space_dict
+
+def find_closest_theta(theta,theta_space):
+    diff_list = np.zeros(theta_space.size)
+    for theta_test_ind in range(theta_space.size):
+        diff = np.abs(theta_space[theta_test_ind]-theta)
+        diff_list[theta_test_ind] = diff
+    return theta_space[np.argmax(diff_list)]
 

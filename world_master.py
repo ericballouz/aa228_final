@@ -1,4 +1,5 @@
 import numpy as np
+import itertools as it
 
 class World:
     def __init__(self):
@@ -7,20 +8,25 @@ class World:
         self.window_w = 4*self.r_o
         self.window_l = 8*self.r_o
         self.track_len = 3*self.r_o
-        self.num_checkpts = 24
-        checkpt_y_size = (3*self.r_o)/((self.num_checkpts/2)-4)
+        self.num_checkpts = 32 #was 24
+        checkpt_y_size = (3*self.r_o)/((self.num_checkpts/2)-8) #was -4
         checkpt_y_list = list()
-        checkpt_y_list.append(-1.5*self.r_o-self.r_i)
-        for i in range(0,int(self.num_checkpts/2)-4):
+        checkpt_y_list.append(-1.5 * self.r_o - self.r_i)
+        checkpt_y_list.append(-1.5*self.r_o-(2/3)*self.r_i)
+        checkpt_y_list.append(-1.5 * self.r_o - (1 / 3) * self.r_i)
+        for i in range(0,int(self.num_checkpts/2)-8):
             y_bottom_of_straight = -1.5*self.r_o
             checkpt_y_list.append(y_bottom_of_straight + i*checkpt_y_size)
         checkpt_y_list.append(1.5*self.r_o)
+        checkpt_y_list.append(1.5 * self.r_o + (1/3)*self.r_i)
+        checkpt_y_list.append(1.5 * self.r_o + (2/3)*self.r_i)
         checkpt_y_list.append(1.5 * self.r_o + self.r_i)
         self.checkpt_y_array = np.asarray(checkpt_y_list)
         self.checkpt_x_array = np.asarray([0])
         self.start_x,self.start_y,self.start_V,self.start_theta = self.get_start_state()
         self.start_state = tuple([self.start_x,self.start_y,self.start_V,self.start_theta])
         self.checkpts_hit = [0]
+        #self.state_space_dict = self.get_state_space_dict()
         #self.state = (self.x,self.y,self.V,self.theta)
 
     def get_start_state(self):
@@ -71,52 +77,68 @@ class World:
             right = False
         if y < y_checkpts[0]:
             if right:
-                return 19
-            return 18
+                return 25
+            return 24
         if y < y_checkpts[1]:
             if right:
-                return 20
-            return 17
+                return 26
+            return 23
         if y < y_checkpts[2]:
             if right:
-                return 21
-            return 16
+                return 27
+            return 24
         if y < y_checkpts[3]:
             if right:
-                return 22
-            return 15
+                return 28
+            return 21
         if y < y_checkpts[4]:
             if right:
-                return 23
-            return 14
+                return 29
+            return 20
         if y < y_checkpts[5]:
             if right:
-                return 0
-            return 13
+                return 30
+            return 19
         if y < y_checkpts[6]:
             if right:
-                return 1
-            return 12
+                return 31
+            return 18
         if y < y_checkpts[7]:
             if right:
-                return 2
-            return 11
+                return 0
+            return 17
         if y < y_checkpts[8]:
             if right:
-                return 3
-            return 10
+                return 1
+            return 16
         if y < y_checkpts[9]:
             if right:
-                return 4
-            return 9
+                return 2
+            return 15
         if y < y_checkpts[10]:
             if right:
+                return 3
+            return 14
+        if y < y_checkpts[11]:
+            if right:
+                return 4
+            return 13
+        if y < y_checkpts[12]:
+            if right:
                 return 5
-            return 8
-        if y>y_checkpts[y_checkpts.size-1]:
+            return 12
+        if y < y_checkpts[13]:
             if right:
                 return 6
-            return 7
+            return 11
+        if y < y_checkpts[14]:
+            if right:
+                return 7
+            return 10
+        if y>y_checkpts[y_checkpts.size-1]:
+            if right:
+                return 8
+            return 9
 
     def update_checkpts_seen(self,state):
         curr_checkpt = self.get_curr_checkpt(state)
@@ -143,3 +165,8 @@ class World:
     def printFarthestCheckpt(self):
         print("Farthest checkpoint: %d" % max(self.checkpts_hit))
         return
+
+
+
+
+
