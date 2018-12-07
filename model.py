@@ -15,7 +15,7 @@ def R(world,s):
         r += 100/world.num_checkpts
 
     if world.successfully_finished(s):
-        r += 50
+        r += 70
         return r, True
 
     return r, False
@@ -25,8 +25,8 @@ def R(world,s):
 def nextState(s, a, dt):
     x, y, V, theta = (s[0], s[1], s[2], s[3])
     dV, dtheta = (a[0], a[1])
-    x = x+V*np.cos(theta)*dt
-    y = y+V*np.sin(theta)*dt
+    x = x+V*np.sin(theta)*dt
+    y = y+V*np.cos(theta)*dt
     theta += dtheta
     V += dV*dt
     return_val = adjustValues(x, y, V, theta)
@@ -34,8 +34,8 @@ def nextState(s, a, dt):
     return return_val
 
 def adjustValues(x, y, V, theta):
-    #x = np.round(x/5)*5
-    #y = np.round(y/5)*5
+    x = np.round(x/5)*5
+    y = np.round(y/5)*5
     V = max(0, V)
     V = np.round(V)
     theta = np.mod(theta, 2*np.pi)
@@ -60,7 +60,7 @@ def action_space():
     return possible_actions
 
 
-def BoltzmannExplore(s, Q_dict):
+def BoltzmannExplore(s, Q_dict, trackCompleted):
     """
         implements Boltzmann exploration
         s: current state
@@ -69,6 +69,7 @@ def BoltzmannExplore(s, Q_dict):
     """
     # calculate probabilities
     tau = 0.5
+    if trackCompleted: tau = 0.65
     A = action_space()
     p = {}
     normalize = 0
@@ -89,7 +90,7 @@ def BoltzmannExplore(s, Q_dict):
     return Z
 
 def epsGreedy(s, Q_dict):
-    epsilon = 0.5
+    epsilon = 0.1
     A = action_space()
     imax = np.argmax([Q_dict[(s+a)] for a in A])
     U = random.uniform(0, 1)
@@ -98,6 +99,6 @@ def epsGreedy(s, Q_dict):
         i = random.randint(0, len(A)-1)
         return A[i]
 
-def nextAction(s, Q_dict):
-    return epsGreedy(s, Q_dict)#BoltzmannExplore(s, Q_dict)
+def nextAction(s, Q_dict, trackCompleted):
+    return BoltzmannExplore(s, Q_dict, trackCompleted)#epsGreedy(s, Q_dict)
 

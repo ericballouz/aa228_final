@@ -11,6 +11,7 @@ class Qlearn(object):
         # state_size = x_size * y_size * v_size * theta_size
         # action_size = len(model.action_space())
         self.Q = defaultdict(int)  # key: state,action(x, y, th, dv, dth) => value: Q
+        self.U = defaultdict(int)  
         self.N = defaultdict(int)  # key: (state, action) => value: N, num of visit to (state, action) for curr episode
         self.lam = 0.8
         self.alpha = 0.9
@@ -29,10 +30,11 @@ class Qlearn(object):
 
         episode_count = 0
         action_count = 0
-        while episode_count < 8000:
+        track_completed = False
+        while episode_count < 10000:
 
             # choose action a based on exploration strategy
-            curr_action = model.nextAction(curr_state, self.Q)
+            curr_action = model.nextAction(curr_state, self.Q, track_completed)
             if curr_state not in self.seen_s_to_a: self.seen_s_to_a[curr_state] = set()
             self.seen_s_to_a[curr_state].add(curr_action)
             # observe reward r_t
@@ -61,6 +63,7 @@ class Qlearn(object):
                 self.N.clear()
                 curr_state = self.world.get_start_state()
                 print("Done learning with episode count:{}  and action count: {}".format(episode_count, action_count))
+                #if max(self.world.checkpts_hit) == 23: trackCompleted = True
                 self.world.printFarthestCheckpt()
                 if episode_count % 500 == 0:
                     plot_world_v2.plot_startup(self.world)
@@ -130,6 +133,8 @@ class Qlearn(object):
         plot_world_v2.savefig('final_traj.png')
         return policy
 
+    def valueIterate(self):
+        return
 
 if __name__ == '__main__':
     print("Running model_learner.py main")
